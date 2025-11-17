@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <title>规则清单 :: 自用</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- 简化版 Nyaa 风格：深色导航 + Bootstrap 表格 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <style>
+    body {
+      background-color: #0b1120;
+      color: #e5e7eb;
+    }
+    .page-header {
+      border-bottom-color: #1f2937;
+      margin-top: 32px;
+      margin-bottom: 24px;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .panel {
+      background-color: #020617;
+      border-color: #1f2937;
+      border-radius: 6px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.6);
+      overflow: hidden;
+    }
+    .panel-heading {
+      border-color: #1f2937;
+      background: linear-gradient(to right, #020617, #0f172a);
+      color: #e5e7eb;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    .table {
+      background-color: #020617;
+      margin-bottom: 0;
+    }
+    .table>thead>tr>th,
+    .table>tbody>tr>td {
+      border-color: #111827;
+      color: #e5e7eb;
+      vertical-align: middle;
+    }
+    .table>thead>tr>th {
+      background-color: #020617;
+      border-bottom-width: 1px;
+      font-weight: 600;
+      font-size: 13px;
+      color: #9ca3af;
+    }
+    .table-striped>tbody>tr:nth-of-type(odd) {
+      background-color: #020617;
+    }
+    .table-striped>tbody>tr:nth-of-type(even) {
+      background-color: #020617;
+    }
+    .table-hover>tbody>tr:hover {
+      background-color: #020617;
+      box-shadow: inset 0 0 0 9999px rgba(15, 23, 42, 0.85);
+    }
+    a {
+      color: #38bdf8;
+    }
+    a:hover {
+      color: #7dd3fc;
+      text-decoration: underline;
+    }
+    footer {
+      margin-top: 32px;
+      padding: 16px 0;
+      border-top: 1px solid #1f2937;
+      color: #9ca3af;
+      text-align: center;
+    }
+    .dns-note {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #9ca3af;
+    }
+    .label-type {
+      font-size: 11px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="lists">
+    <div class="page-header">
+      <h1 style="margin-top:0;font-size:24px;">规则清单 <small>自用</small></h1>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <strong>DNS 层规则列表</strong>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover table-striped">
+          <thead>
+            <tr>
+              <th style="width: 220px;">Name</th>
+              <th style="width: 120px;">类型</th>
+              <th style="width: 140px;">更新日期</th>
+              <th>URL</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- 置顶规则 -->
+            <tr>
+              <td>anti-AD (AdGuard)</td>
+              <td><span class="label label-warning label-type">AdGuard</span></td>
+              <td>—</td>
+              <td><a href="https://anti-ad.net/adguard.txt" target="_blank">https://anti-ad.net/adguard.txt</a></td>
+            </tr>
+            <tr>
+              <td>Loyalsoldier clash-rules</td>
+              <td><span class="label label-primary label-type">Clash</span></td>
+              <td>—</td>
+              <td><a href="https://github.com/Loyalsoldier/clash-rules" target="_blank">https://github.com/Loyalsoldier/clash-rules</a></td>
+            </tr>
+
+            <!-- 其余按 Name 字母顺序 -->
+            <tr>
+              <td>Adblock Warning Removal List</td>
+              <td><span class="label label-default label-type">反反广告</span></td>
+              <td>—</td>
+              <td><a href="https://easylist-downloads.adblockplus.org/antiadblockfilters.txt" target="_blank">https://easylist-downloads.adblockplus.org/antiadblockfilters.txt</a></td>
+            </tr>
+            <tr>
+              <td>AdGuard DNS filter</td>
+              <td><span class="label label-success label-type">DNS</span></td>
+              <td>—</td>
+              <td><a href="https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt" target="_blank">https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt</a></td>
+            </tr>
+            <tr>
+              <td>EasyList</td>
+              <td><span class="label label-primary label-type">Adblock</span></td>
+              <td>—</td>
+              <td><a href="https://easylist-downloads.adblockplus.org/easylist.txt" target="_blank">https://easylist-downloads.adblockplus.org/easylist.txt</a></td>
+            </tr>
+            <tr>
+              <td>EasyList China</td>
+              <td><span class="label label-primary label-type">Adblock</span></td>
+              <td>—</td>
+              <td><a href="https://easylist-downloads.adblockplus.org/easylistchina.txt" target="_blank">https://easylist-downloads.adblockplus.org/easylistchina.txt</a></td>
+            </tr>
+            <tr>
+              <td>EasyPrivacy</td>
+              <td><span class="label label-info label-type">隐私 / 跟踪</span></td>
+              <td>—</td>
+              <td><a href="https://easylist-downloads.adblockplus.org/easyprivacy.txt" target="_blank">https://easylist-downloads.adblockplus.org/easyprivacy.txt</a></td>
+            </tr>
+            <tr>
+              <td>Fanboy Annoyance List</td>
+              <td><span class="label label-default label-type">烦人元素</span></td>
+              <td>—</td>
+              <td><a href="https://easylist-downloads.adblockplus.org/fanboy-annoyance.txt" target="_blank">https://easylist-downloads.adblockplus.org/fanboy-annoyance.txt</a></td>
+            </tr>
+            <tr>
+              <td>Fanboy Social Blocking List</td>
+              <td><span class="label label-default label-type">社交</span></td>
+              <td>—</td>
+              <td><a href="https://easylist-downloads.adblockplus.org/fanboy-social.txt" target="_blank">https://easylist-downloads.adblockplus.org/fanboy-social.txt</a></td>
+            </tr>
+            <tr>
+              <td>HaGeZi Light (adblock)</td>
+              <td><span class="label label-primary label-type">Adblock</span></td>
+              <td>—</td>
+              <td><a href="https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/light.txt" target="_blank">https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/light.txt</a></td>
+            </tr>
+            <tr>
+              <td>hBlock hosts_adblock</td>
+              <td><span class="label label-primary label-type">Adblock</span></td>
+              <td>—</td>
+              <td><a href="https://hblock.molinero.dev/hosts_adblock.txt" target="_blank">https://hblock.molinero.dev/hosts_adblock.txt</a></td>
+            </tr>
+            <tr>
+              <td>StevenBlack Unified hosts</td>
+              <td><span class="label label-danger label-type">hosts</span></td>
+              <td>—</td>
+              <td><a href="https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts" target="_blank">https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
+  <script>
+    (function() {
+      function formatDate(dt) {
+        if (!(dt instanceof Date) || isNaN(dt.getTime())) return '';
+        var y = dt.getFullYear();
+        var m = (dt.getMonth() + 1).toString().padStart(2, '0');
+        var d = dt.getDate().toString().padStart(2, '0');
+        return y + '-' + m + '-' + d;
+      }
+
+      function formatRelative(dt) {
+        if (!(dt instanceof Date) || isNaN(dt.getTime())) return '';
+        var diff = Date.now() - dt.getTime();
+        if (diff < 0) diff = 0;
+        var minute = 60 * 1000;
+        var hour = 60 * minute;
+        var day = 24 * hour;
+
+        if (diff < minute) return '刚刚更新';
+        if (diff < hour) return Math.max(1, Math.round(diff / minute)) + ' 分钟前更新';
+        if (diff < day) return Math.max(1, Math.round(diff / hour)) + ' 小时前更新';
+
+        var days = Math.max(1, Math.round(diff / day));
+        if (days < 30) return days + ' 天前更新';
+
+        // 时间太久就显示具体日期
+        var abs = formatDate(dt);
+        return abs ? abs + ' 更新' : '';
+      }
+
+      function updateLastModified(cell, url) {
+        if (!window.fetch) {
+          cell.textContent = '未知';
+          cell.removeAttribute('title');
+          return;
+        }
+        fetch(url, { method: 'HEAD', mode: 'cors' }).then(function(resp) {
+          if (!resp.ok) throw new Error('HTTP ' + resp.status);
+          var lm = resp.headers.get('Last-Modified');
+          if (!lm) throw new Error('no header');
+          var dt = new Date(lm);
+          var rel = formatRelative(dt);
+          var abs = formatDate(dt) || lm;
+          if (rel) {
+            cell.textContent = rel;
+          } else if (abs) {
+            cell.textContent = abs;
+          } else {
+            cell.textContent = '未知';
+          }
+          if (abs) {
+            cell.setAttribute('title', '实际日期：' + abs);
+          } else {
+            cell.removeAttribute('title');
+          }
+        }).catch(function() {
+          cell.textContent = '未知';
+          cell.removeAttribute('title');
+        });
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var rows = document.querySelectorAll('#lists table tbody tr');
+        Array.prototype.forEach.call(rows, function(row) {
+          if (!row.cells || row.cells.length < 4) return;
+          var dateCell = row.cells[2];
+          var link = row.cells[3].querySelector('a');
+          if (!dateCell || !link || !link.href) return;
+          dateCell.textContent = '检测中…';
+          updateLastModified(dateCell, link.href);
+        });
+
+        // no extra footer text
+      });
+    })();
+  </script>
+</body>
+</html>
