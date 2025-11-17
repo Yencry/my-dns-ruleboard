@@ -9,12 +9,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
   <style>
     body {
-      background-color: #0b1120;
+      background: #020617 url("[SweetSub] Shoushimin Series - 01 [WebRip][1080P][AVC 8bit][CHS].mp4 @0.00.36 -18123234.PNG") center center / cover no-repeat fixed;
       color: #e5e7eb;
     }
     .page-header {
       border-bottom-color: #1f2937;
-      margin-top: 32px;
+      margin-top: 80px;
       margin-bottom: 24px;
     }
     .container {
@@ -22,45 +22,78 @@
       margin: 0 auto;
     }
     .panel {
-      background-color: #020617;
-      border-color: #1f2937;
-      border-radius: 6px;
-      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.6);
-      overflow: hidden;
+      position: relative; /* relative */
+      overflow: hidden; /* overflow-hidden */
+      border-radius: 1rem; /* rounded-2xl */
+      border: 1px solid rgba(255, 255, 255, 0.25); /* border-white/25 */
+      background-color: rgba(0, 0, 0, 0.35); /* bg-black/35 */
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.8); /* shadow-[0_18px_45px_rgba(15,23,42,0.8)] */
+      backdrop-filter: blur(16px); /* backdrop-blur-lg */
+      -webkit-backdrop-filter: blur(16px);
+      color: #f8fafc; /* text-slate-50 */
     }
     .panel-heading {
-      border-color: #1f2937;
-      background: linear-gradient(to right, #020617, #0f172a);
-      color: #e5e7eb;
+      border-color: transparent;
+      background: linear-gradient(
+        to right,
+        rgba(15, 23, 42, 0.9),
+        rgba(15, 23, 42, 0.55)
+      );
+      color: #ffffff;
       padding-top: 10px;
       padding-bottom: 10px;
+      font-weight: 600;
     }
     .table {
-      background-color: #020617;
+      background-color: transparent;
       margin-bottom: 0;
     }
     .table>thead>tr>th,
     .table>tbody>tr>td {
-      border-color: #111827;
+      border-color: transparent;
+      border-top: none;
       color: #e5e7eb;
       vertical-align: middle;
     }
     .table>thead>tr>th {
-      background-color: #020617;
+      background-color: rgba(15, 23, 42, 0.60);
       border-bottom-width: 1px;
       font-weight: 600;
       font-size: 13px;
-      color: #9ca3af;
+      color: #f9fafb;
     }
-    .table-striped>tbody>tr:nth-of-type(odd) {
-      background-color: #020617;
-    }
+    .table-striped>tbody>tr:nth-of-type(odd),
     .table-striped>tbody>tr:nth-of-type(even) {
-      background-color: #020617;
+      background-color: rgba(15, 23, 42, 0.28);
     }
     .table-hover>tbody>tr:hover {
-      background-color: #020617;
-      box-shadow: inset 0 0 0 9999px rgba(15, 23, 42, 0.85);
+      background-color: rgba(15, 23, 42, 0.45);
+      box-shadow: none;
+    }
+    #lists table thead {
+      display: none; /* 隐藏表头 */
+    }
+    #lists table tbody tr > td:nth-child(2) {
+      display: none; /* 隐藏“类型”这一列 */
+    }
+    .btn-copy {
+      border: none;
+      background: transparent;
+      padding: 0 4px;
+      color: #6b7280;
+      box-shadow: none;
+    }
+    .btn-copy:hover,
+    .btn-copy:focus {
+      color: #e5e7eb;
+      background: transparent;
+    }
+    #lists table tbody tr .btn-copy {
+      opacity: 0.0;
+      transition: opacity 0.15s ease;
+    }
+    #lists table tbody tr:hover .btn-copy {
+      opacity: 1;
     }
     a {
       color: #38bdf8;
@@ -70,11 +103,16 @@
       text-decoration: underline;
     }
     footer {
-      margin-top: 32px;
-      padding: 16px 0;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      margin-top: 0;
+      padding: 8px 0;
       border-top: 1px solid #1f2937;
       color: #9ca3af;
       text-align: center;
+      background: transparent;
     }
     .dns-note {
       margin-top: 10px;
@@ -93,16 +131,14 @@
     </div>
 
     <div class="panel panel-default">
-      <div class="panel-heading">
-        <strong>DNS 层规则列表</strong>
-      </div>
       <div class="table-responsive">
         <table class="table table-bordered table-hover table-striped">
           <thead>
             <tr>
-              <th style="width: 220px;">Name</th>
-              <th style="width: 120px;">类型</th>
-              <th style="width: 140px;">更新日期</th>
+              <th>Name</th>
+              <th>类型</th>
+              <th>更新日期</th>
+              <th>说明</th>
               <th>URL</th>
             </tr>
           </thead>
@@ -112,13 +148,25 @@
               <td>anti-AD (AdGuard)</td>
               <td><span class="label label-warning label-type">AdGuard</span></td>
               <td>—</td>
-              <td><a href="https://anti-ad.net/adguard.txt" target="_blank">https://anti-ad.net/adguard.txt</a></td>
+              <td>中文综合广告 / 追踪</td>
+              <td>
+                <a href="https://anti-ad.net/adguard.txt" target="_blank" class="rule-link">https://anti-ad.net/adguard.txt</a>
+                <button type="button" class="btn btn-xs btn-default btn-copy" data-url="https://anti-ad.net/adguard.txt" title="复制链接">
+                  <i class="fa fa-clone"></i>
+                </button>
+              </td>
             </tr>
             <tr>
               <td>Loyalsoldier clash-rules</td>
               <td><span class="label label-primary label-type">Clash</span></td>
               <td>—</td>
-              <td><a href="https://github.com/Loyalsoldier/clash-rules" target="_blank">https://github.com/Loyalsoldier/clash-rules</a></td>
+              <td>Clash 分流规则集</td>
+              <td>
+                <a href="https://github.com/Loyalsoldier/clash-rules" target="_blank" class="rule-link">https://github.com/Loyalsoldier/clash-rules</a>
+                <button type="button" class="btn btn-xs btn-default btn-copy" data-url="https://github.com/Loyalsoldier/clash-rules" title="复制链接">
+                  <i class="fa fa-clone"></i>
+                </button>
+              </td>
             </tr>
 
             <!-- 其余按 Name 字母顺序 -->
@@ -126,61 +174,121 @@
               <td>Adblock Warning Removal List</td>
               <td><span class="label label-default label-type">反反广告</span></td>
               <td>—</td>
-              <td><a href="https://easylist-downloads.adblockplus.org/antiadblockfilters.txt" target="_blank">https://easylist-downloads.adblockplus.org/antiadblockfilters.txt</a></td>
+              <td>移除反广告拦截提示</td>
+              <td>
+                <a href="https://easylist-downloads.adblockplus.org/antiadblockfilters.txt" target="_blank" class="rule-link">https://easylist-downloads.adblockplus.org/antiadblockfilters.txt</a>
+                <button type="button" class="btn btn-xs btn-default btn-copy" data-url="https://easylist-downloads.adblockplus.org/antiadblockfilters.txt" title="复制链接">
+                  <i class="fa fa-clone"></i>
+                </button>
+              </td>
             </tr>
             <tr>
               <td>AdGuard DNS filter</td>
               <td><span class="label label-success label-type">DNS</span></td>
               <td>—</td>
-              <td><a href="https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt" target="_blank">https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt</a></td>
+              <td>AdGuard 官方 DNS 列表</td>
+              <td>
+                <a href="https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt" target="_blank" class="rule-link">https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt</a>
+                <button type="button" class="btn btn-xs btn-default btn-copy" data-url="https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt" title="复制链接">
+                  <i class="fa fa-clone"></i>
+                </button>
+              </td>
             </tr>
             <tr>
               <td>EasyList</td>
               <td><span class="label label-primary label-type">Adblock</span></td>
               <td>—</td>
-              <td><a href="https://easylist-downloads.adblockplus.org/easylist.txt" target="_blank">https://easylist-downloads.adblockplus.org/easylist.txt</a></td>
+              <td>英文通用广告列表</td>
+              <td>
+                <a href="https://easylist-downloads.adblockplus.org/easylist.txt" target="_blank" class="rule-link">https://easylist-downloads.adblockplus.org/easylist.txt</a>
+                <button type="button" class="btn btn-xs btn-default btn-copy" data-url="https://easylist-downloads.adblockplus.org/easylist.txt" title="复制链接">
+                  <i class="fa fa-clone"></i>
+                </button>
+              </td>
             </tr>
             <tr>
               <td>EasyList China</td>
               <td><span class="label label-primary label-type">Adblock</span></td>
               <td>—</td>
-              <td><a href="https://easylist-downloads.adblockplus.org/easylistchina.txt" target="_blank">https://easylist-downloads.adblockplus.org/easylistchina.txt</a></td>
+              <td>中文网站广告扩展</td>
+              <td>
+                <a href="https://easylist-downloads.adblockplus.org/easylistchina.txt" target="_blank" class="rule-link">https://easylist-downloads.adblockplus.org/easylistchina.txt</a>
+                <button type="button" class="btn btn-xs btn-default btn-copy" data-url="https://easylist-downloads.adblockplus.org/easylistchina.txt" title="复制链接">
+                  <i class="fa fa-clone"></i>
+                </button>
+              </td>
             </tr>
             <tr>
               <td>EasyPrivacy</td>
               <td><span class="label label-info label-type">隐私 / 跟踪</span></td>
               <td>—</td>
-              <td><a href="https://easylist-downloads.adblockplus.org/easyprivacy.txt" target="_blank">https://easylist-downloads.adblockplus.org/easyprivacy.txt</a></td>
+              <td>隐私追踪拦截列表</td>
+              <td>
+                <a href="https://easylist-downloads.adblockplus.org/easyprivacy.txt" target="_blank" class="rule-link">https://easylist-downloads.adblockplus.org/easyprivacy.txt</a>
+                <button type="button" class="btn btn-xs btn-default btn-copy" data-url="https://easylist-downloads.adblockplus.org/easyprivacy.txt" title="复制链接">
+                  <i class="fa fa-clone"></i>
+                </button>
+              </td>
             </tr>
             <tr>
               <td>Fanboy Annoyance List</td>
               <td><span class="label label-default label-type">烦人元素</span></td>
               <td>—</td>
-              <td><a href="https://easylist-downloads.adblockplus.org/fanboy-annoyance.txt" target="_blank">https://easylist-downloads.adblockplus.org/fanboy-annoyance.txt</a></td>
+              <td>去除干扰阅读元素</td>
+              <td>
+                <a href="https://easylist-downloads.adblockplus.org/fanboy-annoyance.txt" target="_blank" class="rule-link">https://easylist-downloads.adblockplus.org/fanboy-annoyance.txt</a>
+                <button type="button" class="btn btn-xs btn-default btn-copy" data-url="https://easylist-downloads.adblockplus.org/fanboy-annoyance.txt" title="复制链接">
+                  <i class="fa fa-clone"></i>
+                </button>
+              </td>
             </tr>
             <tr>
               <td>Fanboy Social Blocking List</td>
               <td><span class="label label-default label-type">社交</span></td>
               <td>—</td>
-              <td><a href="https://easylist-downloads.adblockplus.org/fanboy-social.txt" target="_blank">https://easylist-downloads.adblockplus.org/fanboy-social.txt</a></td>
+              <td>社交插件与域名拦截</td>
+              <td>
+                <a href="https://easylist-downloads.adblockplus.org/fanboy-social.txt" target="_blank" class="rule-link">https://easylist-downloads.adblockplus.org/fanboy-social.txt</a>
+                <button type="button" class="btn btn-xs btn-default btn-copy" data-url="https://easylist-downloads.adblockplus.org/fanboy-social.txt" title="复制链接">
+                  <i class="fa fa-clone"></i>
+                </button>
+              </td>
             </tr>
             <tr>
               <td>HaGeZi Light (adblock)</td>
               <td><span class="label label-primary label-type">Adblock</span></td>
               <td>—</td>
-              <td><a href="https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/light.txt" target="_blank">https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/light.txt</a></td>
+              <td>HaGeZi 轻量广告列表</td>
+              <td>
+                <a href="https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/light.txt" target="_blank" class="rule-link">https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/light.txt</a>
+                <button type="button" class="btn btn-xs btn-default btn-copy" data-url="https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/light.txt" title="复制链接">
+                  <i class="fa fa-clone"></i>
+                </button>
+              </td>
             </tr>
             <tr>
               <td>hBlock hosts_adblock</td>
               <td><span class="label label-primary label-type">Adblock</span></td>
               <td>—</td>
-              <td><a href="https://hblock.molinero.dev/hosts_adblock.txt" target="_blank">https://hblock.molinero.dev/hosts_adblock.txt</a></td>
+              <td>hBlock hosts 广告列表</td>
+              <td>
+                <a href="https://hblock.molinero.dev/hosts_adblock.txt" target="_blank" class="rule-link">https://hblock.molinero.dev/hosts_adblock.txt</a>
+                <button type="button" class="btn btn-xs btn-default btn-copy" data-url="https://hblock.molinero.dev/hosts_adblock.txt" title="复制链接">
+                  <i class="fa fa-clone"></i>
+                </button>
+              </td>
             </tr>
             <tr>
               <td>StevenBlack Unified hosts</td>
               <td><span class="label label-danger label-type">hosts</span></td>
               <td>—</td>
-              <td><a href="https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts" target="_blank">https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts</a></td>
+              <td>综合 hosts 黑名单</td>
+              <td>
+                <a href="https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts" target="_blank" class="rule-link">https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts</a>
+                <button type="button" class="btn btn-xs btn-default btn-copy" data-url="https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts" title="复制链接">
+                  <i class="fa fa-clone"></i>
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -189,6 +297,7 @@
   </div>
 
   <footer>
+    <small>Author: Yencry</small>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
@@ -263,6 +372,58 @@
           if (!dateCell || !link || !link.href) return;
           dateCell.textContent = '检测中…';
           updateLastModified(dateCell, link.href);
+        });
+
+        // 复制按钮功能
+        var copyButtons = document.querySelectorAll('.btn-copy');
+        Array.prototype.forEach.call(copyButtons, function(btn) {
+          btn.addEventListener('click', function() {
+            var url = btn.getAttribute('data-url');
+            if (!url) return;
+
+            function showCopied() {
+              var oldText = btn.textContent;
+              btn.textContent = '已复制';
+              btn.disabled = true;
+              setTimeout(function() {
+                btn.textContent = oldText;
+                btn.disabled = false;
+              }, 1200);
+            }
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(url).then(showCopied).catch(function() {
+                // 回退到旧的复制方式
+                var textarea = document.createElement('textarea');
+                textarea.value = url;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                  document.execCommand('copy');
+                  showCopied();
+                } catch (e) {
+                  // ignore
+                }
+                document.body.removeChild(textarea);
+              });
+            } else {
+              var textarea = document.createElement('textarea');
+              textarea.value = url;
+              textarea.style.position = 'fixed';
+              textarea.style.opacity = '0';
+              document.body.appendChild(textarea);
+              textarea.select();
+              try {
+                document.execCommand('copy');
+                showCopied();
+              } catch (e) {
+                // ignore
+              }
+              document.body.removeChild(textarea);
+            }
+          });
         });
 
         // no extra footer text
