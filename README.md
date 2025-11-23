@@ -3,7 +3,7 @@
 一个人自用的Loon广告规则，每六小时自动更新一次
 
 ## 规则地址
-https://yencry.github.io/my-dns-ruleboard/rules/merged_adblock.list
+https://yencry.github.io/my-loon-adblock/rules/merged_adblock.list
 ## 规则来源（部分）
 
 1. **1Hosts (Lite)** 
