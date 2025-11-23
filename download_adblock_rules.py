@@ -23,6 +23,9 @@ class AdBlockDownloader:
         # 创建输出目录
         if not os.path.exists(self.output_dir):
             os.makedirs(self.output_dir)
+
+        # Script Hub 本地服务地址（与 PowerShell 脚本保持一致）
+        self.scripthub_base = "http://localhost:9100"
     
     def extract_original_url(self, script_hub_url):
         """从Script Hub URL中提取原始URL"""
@@ -32,6 +35,27 @@ class AdBlockDownloader:
         if match:
             return match.group(1)
         return script_hub_url
+
+    def build_scripthub_url(self, original_url, filename):
+        """根据原始规则URL和文件名构造 Script Hub 聚合 URL"""
+        # 与 download_merged_from_scripthub.ps1 中的格式保持一致：
+        # http://localhost:9100/file/_start_/{ORIGINAL_URL}/_end_/{FILENAME}?type=rule-set&target=loon-rule-set&del=true&jqEnabled=true
+        return (
+            f"{self.scripthub_base}/file/_start_/{original_url}/_end_/{filename}"
+            "?type=rule-set&target=loon-rule-set&del=true&jqEnabled=true"
+        )
+
+    def expand_source_urls(self, url):
+        """将可能包含多个来源链接的字符串拆分为独立 URL 列表
+
+        支持的格式示例：
+        https://a.com/list.txt😂https://b.com/list.txt😂https://c.com/list.txt
+        """
+        # 按 😂 分隔（Script Hub 来源链接习惯用法）
+        if '😂' in url:
+            parts = [u.strip() for u in url.split('😂') if u.strip()]
+            return parts if parts else [url]
+        return [url]
     
     def download_file(self, url, filename):
         """下载文件"""
@@ -146,11 +170,18 @@ class AdBlockDownloader:
                 content = f.read()
             
             # 根据文件名和内容判断格式
-            if filename.endswith('.txt') or 'adblock' in filename.lower():
+            filename_lower = filename.lower()
+            if '1hosts' in filename_lower:
+                # 1Hosts (Lite) 实际为 Adblock 列表
                 loon_rules = self.convert_adblock_to_loon(content)
-            elif 'hosts' in filename.lower():
+            elif 'hosts' in filename_lower:
+                # 明确为 hosts 格式
                 loon_rules = self.convert_hosts_to_loon(content)
-            elif filename.endswith('.list') or 'surge' in filename.lower():
+            elif 'adblock' in filename_lower:
+                # 明确为 Adblock 格式
+                loon_rules = self.convert_adblock_to_loon(content)
+            elif filename_lower.endswith('.list') or 'surge' in filename_lower:
+                # Surge / Loon 列表格式
                 loon_rules = self.convert_surge_to_loon(content)
             else:
                 # 尝试自动检测
@@ -189,7 +220,7 @@ class AdBlockDownloader:
             f.write("# 聚合广告拦截规则 - Loon格式\n")
             f.write(f"# 生成时间: {time.strftime('%Y-%m-%d %H:%M:%S')}\n")
             f.write(f"# 总规则数: {len(merged_rules)}\n")
-            f.write("# 规则来源: 1Hosts, hBlock, Multi NORMAL, Fanboy-CookieMonster, EasylistChina, AdGuardSDNSFilter, rejectAd, Advertising_Domain, Advertising, anti-ad.net\n")
+            f.write("# 规则来源: 1Hosts (Lite), hBlock, Multi NORMAL, Fanboy-CookieMonster, EasylistChina, AdGuardSDNSFilter, rejectAd, Advertising_Domain, Advertising\n")
             f.write("\n")
             
             # 写入规则
@@ -201,34 +232,52 @@ class AdBlockDownloader:
     
     def download_and_process_all(self):
         """下载并处理所有规则源"""
-        # 规则源配置
+        # 组合来源链接：9 个原始规则 URL 用 😂 拼接，由 Script Hub 一次性聚合
+        combined_source_url = '😂'.join([
+            "https://badmojr.github.io/1Hosts/Lite/adblock.txt",
+            "https://hblock.molinero.dev/hosts_adblock.txt",
+            "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/multi.txt",
+            "https://secure.fanboy.co.nz/fanboy-cookiemonster.txt",
+            "https://easylist-downloads.adblockplus.org/easylistchina.txt",
+            "https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt",
+            "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Loon/rule/rejectAd.list",
+            "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Advertising/Advertising_Domain.list",
+            "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Advertising/Advertising.list",
+        ])
+
+        # 这里只保留一个来源：Combined，由 Script Hub 内部处理 9 个 URL 的聚合
         rule_sources = {
-            "1Hosts_Lite": "https://badmojr.github.io/1Hosts/Lite/adblock.txt",
-            "hBlock": "https://hblock.molinero.dev/hosts_adblock.txt", 
-            "Multi_NORMAL": "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/multi.txt",
-            "Fanboy-CookieMonster": "https://secure.fanboy.co.nz/fanboy-cookiemonster.txt",
-            "EasylistChina": "https://easylist-downloads.adblockplus.org/easylistchina.txt",
-            "AdGuardSDNSFilter": "https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt",
-            "rejectAd": "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Loon/rule/rejectAd.list",
-            "Advertising_Domain": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Advertising/Advertising_Domain.list",
-            "Advertising": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Advertising/Advertising.list",
-            "anti_ad": "https://anti-ad.net/surge2.txt"
+            "Combined": combined_source_url
         }
         
         # all_rules 需要是「每个来源一份规则列表」的列表，方便后续跨来源去重
         all_rules = []
         
         for name, url in rule_sources.items():
-            # 下载文件
-            filename = f"{name}.txt"
-            filepath = self.download_file(url, filename)
+            # 这里的 url 可以是单个源，也可以是多个 URL 用 😂 拼接后的“来源链接”字符串，
+            # 会整体传给 Script Hub，由 Script Hub 自己负责拆分和聚合
+            filename = f"{name}.list"
+            
+            # 通过 Script Hub 拉取已转换为 Loon 规则集的结果
+            scripthub_url = self.build_scripthub_url(url, filename)
+            filepath = self.download_file(scripthub_url, filename)
             
             if filepath:
-                # 转换为Loon格式
-                rules = self.process_file(filepath, filename)
-                if rules:
-                    # 保持为 list[list[str]] 结构，避免在 merge_rules 中把字符串当成字符序列遍历
-                    all_rules.append(rules)
+                # 从 Script Hub 返回的 Loon 规则集中提取有效规则行
+                try:
+                    rules = []
+                    with open(filepath, 'r', encoding='utf-8') as f:
+                        for line in f:
+                            line = line.strip()
+                            # 跳过注释和空行
+                            if not line or line.startswith('#') or line.startswith('#!'):
+                                continue
+                            rules.append(line)
+                    if rules:
+                        # 保持为 list[list[str]] 结构，避免在 merge_rules 中把字符串当成字符序列遍历
+                        all_rules.append(rules)
+                except Exception as e:
+                    print(f"✗ 解析 Script Hub 返回结果失败 {filename}: {e}")
                 
                 # 删除临时文件
                 try:

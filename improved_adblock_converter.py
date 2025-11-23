@@ -137,6 +137,7 @@ class ImprovedAdBlockConverter:
     def process_all_sources(self):
         """处理所有规则源"""
         rule_sources = {
+            "1Hosts_Lite": "https://badmojr.github.io/1Hosts/Lite/adblock.txt",
             "hBlock": "https://hblock.molinero.dev/hosts_adblock.txt",
             "Multi_NORMAL": "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/multi.txt",
             "Fanboy-CookieMonster": "https://secure.fanboy.co.nz/fanboy-cookiemonster.txt",
@@ -144,8 +145,7 @@ class ImprovedAdBlockConverter:
             "AdGuardSDNSFilter": "https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt",
             "rejectAd": "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Loon/rule/rejectAd.list",
             "Advertising_Domain": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Advertising/Advertising_Domain.list",
-            "Advertising": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Advertising/Advertising.list",
-            "anti_ad": "https://anti-ad.net/surge2.txt"
+            "Advertising": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Advertising/Advertising.list"
         }
         
         all_domains = set()
