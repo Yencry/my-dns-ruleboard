@@ -19,6 +19,16 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install requests
+
       - name: Pull Script-Hub Docker image
         run: |
           docker pull xream/script-hub:latest
@@ -42,48 +52,9 @@ jobs:
             sleep 2
           done
 
-      - name: Generate merged_adblock.list via Script-Hub
+      - name: Generate merged_adblock.list via Python + Script-Hub
         run: |
-          mkdir -p rules tmp_rules
-
-          # 要聚合的规则源列表（与本地使用的一致）
-          # 形式：源URL|临时文件名
-          SOURCES=(
-            "https://badmojr.github.io/1Hosts/Lite/adblock.txt|1hosts.list"
-            "https://hblock.molinero.dev/hosts_adblock.txt|hblock.list"
-            "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/multi.txt|multi.list"
-            "https://secure.fanboy.co.nz/fanboy-cookiemonster.txt|fanboy-cookiemonster.list"
-            "https://easylist-downloads.adblockplus.org/easylistchina.txt|easylistchina.list"
-            "https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt|adguard-sdns.list"
-            "https://raw.githubusercontent.com/fmz200/wool_scripts/main/Loon/rule/rejectAd.list|rejectAd.list"
-            "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Advertising/Advertising_Domain.list|Advertising_Domain.list"
-            "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Advertising/Advertising.list|Advertising.list"
-          )
-
-          # 先清空目标文件
-          : > rules/merged_adblock.list
-
-          for ITEM in "${SOURCES[@]}"; do
-            SRC="${ITEM%%|*}"
-            NAME="${ITEM##*|}"
-
-            URL="http://localhost:9100/file/_start_/${SRC}/_end_/${NAME}?type=rule-set&target=loon-rule-set&del=true&jqEnabled=true"
-
-            echo "Fetching via Script-Hub: $SRC"
-            echo "  URL: $URL"
-
-            if ! curl -fSL --connect-timeout 20 --max-time 300 "$URL" -o "tmp_rules/$NAME"; then
-              echo "  ERROR: failed to fetch $SRC" >&2
-              exit 1
-            fi
-
-            # 追加到总文件
-            cat "tmp_rules/$NAME" >> rules/merged_adblock.list
-            echo "" >> rules/merged_adblock.list
-          done
-
-          echo "Generated file info:"
-          ls -lh rules/merged_adblock.list
+          python run_adblock_setup.py
 
       - name: Commit and push if changed
         run: |
