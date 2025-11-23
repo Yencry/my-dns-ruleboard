@@ -1,4 +1,4 @@
-# my-dns-ruleboard
+# My Loon Adblock
 
 一个人自用的Loon广告规则，每六小时自动更新一次
 
