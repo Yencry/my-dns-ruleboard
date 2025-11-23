@@ -453,7 +453,7 @@
       function updateLastModified(element, url) {
         if (!window.fetch) {
           element.textContent = '未知';
-          return Promise.resolve();
+          return;
         }
 
         function handleResponse(resp) {
@@ -465,12 +465,10 @@
           var rel = formatRelative(dt);
           element.textContent = rel || formatDate(dt) || '未知';
           element.title = '实际日期：' + (formatDate(dt) || lm);
-          element.setAttribute('data-live-ok', '1');
-          element.removeAttribute('data-live-failed');
         }
 
         // 首先尝试使用 HEAD 获取 Last-Modified
-        return fetch(url, { method: 'HEAD', mode: 'cors' })
+        fetch(url, { method: 'HEAD', mode: 'cors' })
           .then(handleResponse)
           .catch(function() {
             // 某些站点对 HEAD / CORS 支持不好，回退到 GET
@@ -478,58 +476,14 @@
               .then(handleResponse)
               .catch(function() {
                 element.textContent = '未知';
-                element.setAttribute('data-live-failed', '1');
               });
           });
       }
 
-      function initLastModifiedFromJson() {
-        var metaUrl = './rules/sources_meta.json';
-        return fetch(metaUrl, { method: 'GET', cache: 'no-store' })
-          .then(function(resp) {
-            if (!resp.ok) throw new Error('HTTP ' + resp.status);
-            return resp.json();
-          })
-          .then(function(data) {
-            if (!data || !Array.isArray(data.sources)) return;
-            var map = new Map();
-            data.sources.forEach(function(item) {
-              if (item && item.url) {
-                map.set(item.url, item);
-              }
-            });
-
-            document.querySelectorAll('.last-modified').forEach(function(el) {
-              // 如果实时请求已经成功，就不再覆盖
-              if (el.getAttribute('data-live-ok') === '1') return;
-
-              var url = el.getAttribute('data-url');
-              var meta = url && map.get(url);
-              if (!meta || !meta.last_modified) return;
-              var dt = new Date(meta.last_modified);
-              if (!(dt instanceof Date) || isNaN(dt.getTime())) return;
-              var rel = formatRelative(dt);
-              el.textContent = rel || formatDate(dt) || '未知';
-              var header = meta.last_modified_header || meta.last_modified;
-              el.title = '实际日期：' + (formatDate(dt) || header);
-              el.setAttribute('data-has-meta', '1');
-            });
-          });
-      }
-
-      // Initialize Last Modified: live first, then JSON fallback
-      var lmElements = Array.prototype.slice.call(document.querySelectorAll('.last-modified'));
-      var livePromises = lmElements.map(function(el) {
+      // Initialize Last Modified
+      document.querySelectorAll('.last-modified').forEach(function(el) {
         var url = el.getAttribute('data-url');
-        if (!url) return Promise.resolve();
-        return updateLastModified(el, url);
-      });
-
-      Promise.allSettled(livePromises).then(function() {
-        // 对于实时请求失败或缺少头信息的源，再尝试使用 CI 生成的 JSON 元数据
-        return initLastModifiedFromJson().catch(function() {
-          // JSON 不可用时忽略，保持实时请求结果
-        });
+        if (url) updateLastModified(el, url);
       });
 
       // Copy Functionality
